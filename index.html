@@ -120,7 +120,40 @@ body.edit-mode .item-edit-btns{display:flex;}
 .sec-label{padding:10px 16px 5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sub);background:var(--bg);}
 .no-result{text-align:center;padding:60px 20px;color:var(--sub);font-size:14px;}
 
-/* FILTER BAR */
+/* HALL - SHOPPING */
+.shop-card{background:var(--white);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden;}
+.shop-card-top{display:flex;gap:12px;padding:14px 14px 0;}
+.shop-card-img{width:72px;height:72px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.shop-card-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.shop-card-info{flex:1;min-width:0;}
+.shop-card-cat{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sub);margin-bottom:3px;}
+.shop-card-name{font-size:16px;font-weight:700;margin-bottom:4px;}
+.shop-card-brand{font-size:13px;color:var(--sub);margin-bottom:2px;}
+.shop-card-size{font-size:13px;color:var(--sub);}
+.shop-card-body{padding:10px 14px 12px;}
+.shop-badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.shop-badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;}
+.shop-badge.where{background:#EEF2FF;color:#4F46E5;}
+.shop-badge.alt{background:#FFF7ED;color:#C2410C;}
+.shop-memo{font-size:12px;color:var(--sub);line-height:1.5;}
+.shop-card-foot{display:none;justify-content:flex-end;gap:6px;padding:0 14px 12px;}
+body.edit-mode .shop-card-foot{display:flex;}
+
+/* HALL - FAQ */
+.faq-item{background:var(--white);border-radius:12px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden;}
+.faq-q{display:flex;align-items:center;padding:14px 16px;cursor:pointer;gap:10px;}
+.faq-q-text{flex:1;}
+.faq-q-ko{font-size:14px;font-weight:600;line-height:1.4;}
+.faq-q-en{font-size:11px;color:var(--sub);margin-top:2px;font-style:italic;}
+.faq-arrow{font-size:14px;color:var(--sub2);transition:transform .2s;flex-shrink:0;}
+.faq-arrow.open{transform:rotate(180deg);}
+.faq-edit-btns{display:none;gap:4px;flex-shrink:0;}
+body.edit-mode .faq-edit-btns{display:flex;}
+.faq-a{display:none;padding:12px 16px 14px;background:#fafafa;border-top:1px solid var(--border);}
+.faq-a.open{display:block;}
+.faq-a-ko{font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap;}
+.faq-a-en{font-size:11px;color:var(--sub);line-height:1.6;margin-top:6px;white-space:pre-wrap;font-style:italic;padding-top:6px;border-top:1px solid var(--border);}
+
 .filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:8px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
 .filter-bar::-webkit-scrollbar{display:none;}
 .filter-btn{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);background:none;font-size:12px;font-weight:600;color:var(--sub);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
@@ -250,6 +283,7 @@ body.edit-mode .bottom-add{display:block;}
 <div class="kitchen-tabs">
   <button class="k-tab active" id="kt-front" onclick="showKitchen('front',this)">🍣 앞주방</button>
   <button class="k-tab" id="kt-back" onclick="showKitchen('back',this)">🔥 뒷주방</button>
+  <button class="k-tab" id="kt-hall" onclick="showKitchen('hall',this)">🏠 홀</button>
   <button class="k-tab" id="kt-search" onclick="showKitchen('search',this)">🔍 검색</button>
 </div>
 
@@ -280,6 +314,39 @@ body.edit-mode .bottom-add{display:block;}
     <div id="back-sizzling" class="s-panel visible"></div>
     <div id="back-hotmeal" class="s-panel"></div>
     <div id="back-sidedish" class="s-panel"></div>
+  </div>
+</div>
+
+<!-- HALL PANEL -->
+<div id="k-hall" class="k-panel">
+  <nav class="sec-nav"><div class="sec-nav-inner">
+    <button class="s-tab active" onclick="showSec('hall','shopping',this)">🛒 장보기</button>
+    <button class="s-tab" onclick="showSec('hall','faq',this)">❓ 자주하는 질문</button>
+  </div></nav>
+  <div class="main">
+    <div id="hall-shopping" class="s-panel visible">
+      <!-- 장보기 검색 -->
+      <div style="padding:10px 14px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:101px;z-index:80;">
+        <div class="search-inner">
+          <span style="font-size:15px;opacity:.4;">🔍</span>
+          <input class="search-input" id="shopSearchInput" type="text" placeholder="재료명, 브랜드, 구매처 검색..."
+            oninput="doShopSearch(this.value)" autocomplete="off">
+          <button id="shopSearchClear" onclick="clearShopSearch()" style="background:none;border:none;font-size:18px;color:var(--sub2);cursor:pointer;display:none;">×</button>
+        </div>
+      </div>
+      <div style="padding:16px;">
+        <div id="shoppingContent"></div>
+        <div id="shopAddRow" style="margin-top:12px;display:none;">
+          <button class="bottom-add-btn" onclick="openShoppingAdd()">+ 장보기 항목 추가</button>
+        </div>
+      </div>
+    </div>
+    <div id="hall-faq" class="s-panel" style="padding:16px;">
+      <div id="faqContent"></div>
+      <div id="faqAddRow" style="margin-top:12px;display:none;">
+        <button class="bottom-add-btn" onclick="openFaqAdd()">+ 질문 추가</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -395,6 +462,103 @@ body.edit-mode .bottom-add{display:block;}
   </div>
 </div>
 
+<!-- SHOPPING MODAL -->
+<div class="overlay" id="shoppingModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title" id="shopModalTitle">🛒 장보기 항목 추가</div>
+      <button class="modal-x" onclick="closeShoppingModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- 사진 -->
+      <div class="f-group">
+        <label class="f-label">사진 (패키지)</label>
+        <div class="img-upload">
+          <input type="file" accept="image/*" id="shopImgFile" onchange="handleShopImg(event)">
+          <div id="shopImgPh"><div class="up-icon">📦</div><div class="up-hint">패키지 사진 업로드</div></div>
+          <img id="shopImgPv" class="preview">
+        </div>
+      </div>
+      <div class="f-row2">
+        <div class="f-group">
+          <label class="f-label">카테고리</label>
+          <input class="f-input" id="shopCat" placeholder="예) 해산물">
+        </div>
+        <div class="f-group">
+          <label class="f-label">재료명 *</label>
+          <input class="f-input" id="shopName" placeholder="예) 살몬">
+        </div>
+      </div>
+      <div class="f-row2">
+        <div class="f-group">
+          <label class="f-label">브랜드</label>
+          <input class="f-input" id="shopBrand" placeholder="예) Tassal">
+        </div>
+        <div class="f-group">
+          <label class="f-label">용량 / 규격</label>
+          <input class="f-input" id="shopSize" placeholder="예) 1kg">
+        </div>
+      </div>
+      <div class="f-group">
+        <label class="f-label">구매처</label>
+        <input class="f-input" id="shopWhere" placeholder="예) Costco / IGA">
+      </div>
+      <div class="f-group">
+        <label class="f-label">대체 브랜드 / 대체템</label>
+        <input class="f-input" id="shopAlt" placeholder="예) 없으면 Coles 냉장 살몬으로 대체">
+      </div>
+      <div class="f-group">
+        <label class="f-label">메모</label>
+        <input class="f-input" id="shopMemo" placeholder="예) 냉동 말고 냉장으로, 매주 월요일 주문">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="f-cancel" onclick="closeShoppingModal()">취소</button>
+      <button class="f-save" onclick="saveShoppingItem()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ MODAL -->
+<div class="overlay" id="faqModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title" id="faqModalTitle">❓ 질문 추가</div>
+      <button class="modal-x" onclick="closeFaqModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="f-group">
+        <label class="f-label">질문 (한국어)</label>
+        <input class="f-input" id="faqQ" placeholder="예) 아보카도 대신 오이 넣을 수 있나요?">
+      </div>
+      <div class="f-group">
+        <label class="f-label">질문 (영어) <span id="faqQEnStatus" style="font-weight:400;text-transform:none;color:var(--sub);"></span></label>
+        <div style="display:flex;gap:8px;">
+          <input class="f-input" id="faqQEn" placeholder="English question" style="flex:1">
+          <button onclick="translateFaq('q')" style="padding:0 12px;border:1.5px solid var(--border);border-radius:10px;background:none;cursor:pointer;font-size:12px;color:var(--sub);white-space:nowrap;font-family:'Noto Sans KR',sans-serif;">🤖 번역</button>
+        </div>
+      </div>
+      <div class="f-group">
+        <label class="f-label">답변 (한국어)</label>
+        <textarea class="f-textarea" id="faqA" placeholder="예) 네, 가능합니다. 추가 비용 없이 오이로 대체해 드려요."></textarea>
+      </div>
+      <div class="f-group">
+        <label class="f-label">답변 (영어) <span id="faqAEnStatus" style="font-weight:400;text-transform:none;color:var(--sub);"></span></label>
+        <div style="display:flex;gap:8px;align-items:flex-start;">
+          <textarea class="f-textarea" id="faqAEn" placeholder="English answer" style="flex:1"></textarea>
+          <button onclick="translateFaq('a')" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;background:none;cursor:pointer;font-size:12px;color:var(--sub);white-space:nowrap;font-family:'Noto Sans KR',sans-serif;flex-shrink:0;">🤖 번역</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="f-cancel" onclick="closeFaqModal()">취소</button>
+      <button class="f-save" onclick="saveFaqItem()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- PRINT MODAL -->
 <div class="confirm-overlay" id="printModal">
   <div class="confirm-box" style="max-width:340px;">
@@ -409,6 +573,28 @@ body.edit-mode .bottom-add{display:block;}
 
 <script>
 const DEFAULT_DATA = {
+  "faq": [
+    {
+      id: "faq_example_1",
+      qKo: "롤에 아보카도 대신 오이로 바꿔줄 수 있나요?",
+      qEn: "Can I swap the avo for cucumber in the rolls?",
+      aKo: "네, 가능합니다! 추가 비용 없이 아보카도를 오이로 바꿔드릴 수 있어요.",
+      aEn: "Absolutely! We're happy to swap the avo for cucumber — no extra charge!"
+    }
+  ],
+  "shopping": [
+    {
+      id: "shop_example_1",
+      cat: "식재료",
+      name: "설탕",
+      brand: "CSR",
+      size: "1kg",
+      where: "Woolworths / Coles",
+      alt: "없으면 다른 브랜드 흰 설탕으로 대체 가능",
+      memo: "흰 설탕 (White Sugar)",
+      img: ""
+    }
+  ],
   "front-nigiri1": [
     {id:"n1-1",plate:"blue",nameEn:"Ika Nigiri",nameKr:"이까 니기리",img:"",
       ingredients:[{name:"이까 (오징어)",key:true},{name:"샤리 (밥)",key:false},{name:"매실소스",key:true},{name:"레몬",key:false}],
@@ -939,6 +1125,8 @@ function showKitchen(id, btn) {
   if (id === 'search') {
     setTimeout(function() { document.getElementById('searchInput').focus(); }, 100);
     doSearch(document.getElementById('searchInput').value);
+  } else if (id === 'hall') {
+    renderHall();
   } else {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
@@ -950,6 +1138,8 @@ function showSec(kitchen, sec, btn) {
   panel.querySelectorAll('.s-tab').forEach(b => b.classList.remove('active'));
   document.getElementById(kitchen + '-' + sec).classList.add('visible');
   btn.classList.add('active');
+  // 홀 탭 전환 시 추가 버튼 상태 갱신
+  if (kitchen === 'hall') renderHall();
 }
 
 // ═══════════════ EDIT MODE + PASSWORD ═══════════════
@@ -972,6 +1162,7 @@ function toggleEdit() {
     document.getElementById('editToggle').classList.remove('active');
     document.getElementById('editToggle').textContent = '편집';
     renderAll();
+    renderHall();
   } else {
     pwMode = 'login';
     document.getElementById('pwTitle').textContent = '편집 모드';
@@ -1012,6 +1203,7 @@ async function doPw() {
       document.getElementById('editToggle').classList.add('active');
       document.getElementById('editToggle').textContent = '완료';
       renderAll();
+      renderHall();
     } else {
       errEl.textContent = '비밀번호가 틀렸습니다';
       document.getElementById('pwInput').value = '';
@@ -1424,7 +1616,274 @@ function doPrint() {
   window.print();
 }
 
-// ═══════════════ TOAST ═══════════════
+// ═══════════════ HALL ═══════════════
+// DB.shopping = [{id, cat, name, brand, size, where, alt, memo, img}]
+// DB.faq      = [{id, qKo, qEn, aKo, aEn}]
+
+function doShopSearch(q) {
+  var clearBtn = document.getElementById('shopSearchClear');
+  q = q.trim();
+  clearBtn.style.display = q ? 'block' : 'none';
+  if (!q) { renderShopping(); return; }
+  var lo = q.toLowerCase();
+  var filtered = (DB.shopping||[]).filter(function(item) {
+    return (item.name  && item.name.toLowerCase().includes(lo))
+        || (item.brand && item.brand.toLowerCase().includes(lo))
+        || (item.cat   && item.cat.toLowerCase().includes(lo))
+        || (item.where && item.where.toLowerCase().includes(lo))
+        || (item.alt   && item.alt.toLowerCase().includes(lo))
+        || (item.memo  && item.memo.toLowerCase().includes(lo));
+  });
+  var el = document.getElementById('shoppingContent');
+  if (!el) return;
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty"><h3>"' + q + '" 검색 결과가 없어요</h3></div>';
+    return;
+  }
+  var html = filtered.map(function(item) {
+    var imgHtml = item.img ? '<div class="shop-card-img"><img src="' + item.img + '"></div>' : '<div class="shop-card-img">📦</div>';
+    var badges = '';
+    if (item.where) badges += '<span class="shop-badge where">📍 ' + item.where + '</span>';
+    if (item.alt)   badges += '<span class="shop-badge alt">🔄 ' + item.alt + '</span>';
+    return '<div class="shop-card">'
+      + '<div class="shop-card-top">' + imgHtml
+      + '<div class="shop-card-info">'
+      + '<div class="shop-card-cat">' + (item.cat||'기타') + '</div>'
+      + '<div class="shop-card-name">' + item.name + '</div>'
+      + (item.brand ? '<div class="shop-card-brand">🏷 ' + item.brand + '</div>' : '')
+      + (item.size  ? '<div class="shop-card-size">📏 ' + item.size + '</div>' : '')
+      + '</div></div>'
+      + ((badges||item.memo) ? '<div class="shop-card-body">'
+        + (badges ? '<div class="shop-badge-row">' + badges + '</div>' : '')
+        + (item.memo ? '<div class="shop-memo">📝 ' + item.memo + '</div>' : '')
+        + '</div>' : '')
+      + '<div class="shop-card-foot">'
+      + '<button class="ie-btn" onclick="editShopItem(\'' + item.id + '\')">✏️</button>'
+      + '<button class="ie-btn" onclick="deleteShopItem(\'' + item.id + '\')">🗑️</button>'
+      + '</div></div>';
+  }).join('');
+  el.innerHTML = html;
+}
+
+function clearShopSearch() {
+  document.getElementById('shopSearchInput').value = '';
+  document.getElementById('shopSearchClear').style.display = 'none';
+  renderShopping();
+  document.getElementById('shopSearchInput').focus();
+}
+
+function renderHall() {
+  var shopRow = document.getElementById('shopAddRow');
+  var faqRow = document.getElementById('faqAddRow');
+  if (shopRow) shopRow.style.display = editMode ? 'block' : 'none';
+  if (faqRow) faqRow.style.display = editMode ? 'block' : 'none';
+  renderShopping();
+  renderFaq();
+}
+
+function renderShopping() {
+  var el = document.getElementById('shoppingContent');
+  if (!el) return;
+  var items = DB.shopping || [];
+  if (!items.length) {
+    el.innerHTML = '<div class="empty"><h3>장보기 가이드가 없어요</h3><p>편집 모드에서 추가해보세요</p></div>';
+    return;
+  }
+  var groups = {}, order = [];
+  items.forEach(function(item) {
+    var cat = item.cat || '기타';
+    if (!groups[cat]) { groups[cat] = []; order.push(cat); }
+    groups[cat].push(item);
+  });
+  var html = '';
+  order.forEach(function(cat) {
+    groups[cat].forEach(function(item) {
+      var imgHtml = item.img
+        ? '<div class="shop-card-img"><img src="' + item.img + '"></div>'
+        : '<div class="shop-card-img">📦</div>';
+      var badges = '';
+      if (item.where) badges += '<span class="shop-badge where">📍 ' + item.where + '</span>';
+      if (item.alt)   badges += '<span class="shop-badge alt">🔄 ' + item.alt + '</span>';
+      html += '<div class="shop-card">'
+        + '<div class="shop-card-top">' + imgHtml
+        + '<div class="shop-card-info">'
+        + '<div class="shop-card-cat">' + (item.cat||'기타') + '</div>'
+        + '<div class="shop-card-name">' + item.name + '</div>'
+        + (item.brand ? '<div class="shop-card-brand">🏷 ' + item.brand + '</div>' : '')
+        + (item.size  ? '<div class="shop-card-size">📏 ' + item.size + '</div>' : '')
+        + '</div></div>'
+        + ((badges || item.memo) ? '<div class="shop-card-body">'
+          + (badges ? '<div class="shop-badge-row">' + badges + '</div>' : '')
+          + (item.memo ? '<div class="shop-memo">📝 ' + item.memo + '</div>' : '')
+          + '</div>' : '')
+        + '<div class="shop-card-foot">'
+        + '<button class="ie-btn" onclick="editShopItem(\'' + item.id + '\')">✏️</button>'
+        + '<button class="ie-btn" onclick="deleteShopItem(\'' + item.id + '\')">🗑️</button>'
+        + '</div></div>';
+    });
+  });
+  el.innerHTML = html;
+}
+
+function renderFaq() {
+  var el = document.getElementById('faqContent');
+  if (!el) return;
+  var items = DB.faq || [];
+  if (!items.length) {
+    el.innerHTML = '<div class="empty"><h3>자주하는 질문이 없어요</h3><p>편집 모드에서 추가해보세요</p></div>';
+    return;
+  }
+  el.innerHTML = items.map(function(item) {
+    return '<div class="faq-item">'
+      + '<div class="faq-q" onclick="toggleFaq(this)">'
+      + '<div class="faq-q-text">'
+      + '<div class="faq-q-ko">Q. ' + item.qKo + '</div>'
+      + (item.qEn ? '<div class="faq-q-en">Q. ' + item.qEn + '</div>' : '')
+      + '</div>'
+      + '<div class="faq-edit-btns" onclick="event.stopPropagation()">'
+      + '<button class="ie-btn" onclick="editFaqItem(\'' + item.id + '\')">✏️</button>'
+      + '<button class="ie-btn" onclick="deleteFaqItem(\'' + item.id + '\')">🗑️</button>'
+      + '</div>'
+      + '<div class="faq-arrow">⌄</div>'
+      + '</div>'
+      + '<div class="faq-a">'
+      + '<div class="faq-a-ko">' + item.aKo + '</div>'
+      + (item.aEn ? '<div class="faq-a-en">' + item.aEn + '</div>' : '')
+      + '</div></div>';
+  }).join('');
+}
+
+function toggleFaq(qEl) {
+  var aEl = qEl.nextElementSibling;
+  var arrow = qEl.querySelector('.faq-arrow');
+  var isOpen = aEl.classList.toggle('open');
+  arrow.classList.toggle('open', isOpen);
+}
+
+// Shopping CRUD
+var editingShopId = null, currentShopImg = '';
+
+function handleShopImg(e) {
+  var f = e.target.files[0]; if (!f) return;
+  var rd = new FileReader();
+  rd.onload = function(ev) {
+    currentShopImg = ev.target.result;
+    document.getElementById('shopImgPv').src = currentShopImg;
+    document.getElementById('shopImgPv').style.display = 'block';
+    document.getElementById('shopImgPh').style.display = 'none';
+  };
+  rd.readAsDataURL(f);
+}
+
+function openShoppingAdd() {
+  if (!editMode) { showToast('편집 모드를 켜주세요'); return; }
+  editingShopId = null; currentShopImg = '';
+  document.getElementById('shopModalTitle').textContent = '🛒 장보기 항목 추가';
+  ['shopCat','shopName','shopBrand','shopSize','shopWhere','shopAlt','shopMemo'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('shopImgPv').style.display = 'none';
+  document.getElementById('shopImgPh').style.display = 'block';
+  document.getElementById('shopImgFile').value = '';
+  document.getElementById('shoppingModal').classList.add('open');
+}
+
+function editShopItem(id) {
+  var item = (DB.shopping||[]).find(function(i){return i.id===id;});
+  if (!item) return;
+  editingShopId = id; currentShopImg = item.img || '';
+  document.getElementById('shopModalTitle').textContent = '🛒 장보기 항목 수정';
+  document.getElementById('shopCat').value   = item.cat   || '';
+  document.getElementById('shopName').value  = item.name  || '';
+  document.getElementById('shopBrand').value = item.brand || '';
+  document.getElementById('shopSize').value  = item.size  || '';
+  document.getElementById('shopWhere').value = item.where || '';
+  document.getElementById('shopAlt').value   = item.alt   || '';
+  document.getElementById('shopMemo').value  = item.memo  || '';
+  if (item.img) { document.getElementById('shopImgPv').src=item.img; document.getElementById('shopImgPv').style.display='block'; document.getElementById('shopImgPh').style.display='none'; }
+  else { document.getElementById('shopImgPv').style.display='none'; document.getElementById('shopImgPh').style.display='block'; }
+  document.getElementById('shoppingModal').classList.add('open');
+}
+
+function closeShoppingModal() { document.getElementById('shoppingModal').classList.remove('open'); editingShopId=null; }
+
+async function saveShoppingItem() {
+  var name = document.getElementById('shopName').value.trim();
+  if (!name) { alert('재료명을 입력하세요'); return; }
+  var item = { id: editingShopId||('shop_'+Date.now()), cat: document.getElementById('shopCat').value.trim(), name: name, brand: document.getElementById('shopBrand').value.trim(), size: document.getElementById('shopSize').value.trim(), where: document.getElementById('shopWhere').value.trim(), alt: document.getElementById('shopAlt').value.trim(), memo: document.getElementById('shopMemo').value.trim(), img: currentShopImg };
+  if (!DB.shopping) DB.shopping = [];
+  if (editingShopId) { var idx=DB.shopping.findIndex(function(i){return i.id===editingShopId;}); if(idx!==-1) DB.shopping[idx]=item; }
+  else DB.shopping.push(item);
+  await saveDB(); closeShoppingModal(); renderShopping();
+}
+
+async function deleteShopItem(id) { DB.shopping=(DB.shopping||[]).filter(function(i){return i.id!==id;}); await saveDB(); renderShopping(); }
+
+// FAQ CRUD
+var editingFaqId = null;
+
+function openFaqAdd() {
+  if (!editMode) { showToast('편집 모드를 켜주세요'); return; }
+  editingFaqId = null;
+  document.getElementById('faqModalTitle').textContent = '❓ 질문 추가';
+  ['faqQ','faqQEn','faqA','faqAEn'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('faqQEnStatus').textContent = '';
+  document.getElementById('faqAEnStatus').textContent = '';
+  document.getElementById('faqModal').classList.add('open');
+  setTimeout(function(){document.getElementById('faqQ').focus();},100);
+}
+
+function closeFaqModal() { document.getElementById('faqModal').classList.remove('open'); editingFaqId=null; }
+
+async function saveFaqItem() {
+  var qKo = document.getElementById('faqQ').value.trim();
+  if (!qKo) { alert('질문(한국어)을 입력하세요'); return; }
+  var item = { id: editingFaqId||('faq_'+Date.now()), qKo: qKo, qEn: document.getElementById('faqQEn').value.trim(), aKo: document.getElementById('faqA').value.trim(), aEn: document.getElementById('faqAEn').value.trim() };
+  if (!DB.faq) DB.faq = [];
+  if (editingFaqId) { var idx=DB.faq.findIndex(function(i){return i.id===editingFaqId;}); if(idx!==-1) DB.faq[idx]=item; }
+  else DB.faq.push(item);
+  await saveDB(); closeFaqModal(); renderFaq();
+}
+
+function editFaqItem(id) {
+  var item = (DB.faq||[]).find(function(i){return i.id===id;});
+  if (!item) return;
+  editingFaqId = id;
+  document.getElementById('faqModalTitle').textContent = '❓ 질문 수정';
+  document.getElementById('faqQ').value   = item.qKo||'';
+  document.getElementById('faqQEn').value = item.qEn||'';
+  document.getElementById('faqA').value   = item.aKo||'';
+  document.getElementById('faqAEn').value = item.aEn||'';
+  document.getElementById('faqQEnStatus').textContent = '';
+  document.getElementById('faqAEnStatus').textContent = '';
+  document.getElementById('faqModal').classList.add('open');
+}
+
+async function deleteFaqItem(id) { DB.faq=(DB.faq||[]).filter(function(i){return i.id!==id;}); await saveDB(); renderFaq(); }
+
+// AI 번역
+async function translateFaq(type) {
+  var srcId = type==='q' ? 'faqQ' : 'faqA';
+  var tgtId = type==='q' ? 'faqQEn' : 'faqAEn';
+  var statusId = type==='q' ? 'faqQEnStatus' : 'faqAEnStatus';
+  var src = document.getElementById(srcId).value.trim();
+  if (!src) { alert('한국어 ' + (type==='q'?'질문':'답변') + '을 먼저 입력하세요'); return; }
+  var statusEl = document.getElementById(statusId);
+  statusEl.textContent = '번역 중...';
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 500, messages: [{ role: 'user', content: 'Translate the following Korean text into natural Australian English as used in a casual sushi restaurant. Use everyday Aussie expressions — for example, use "avo" instead of "avocado", "swap" instead of "substitute", "no worries" instead of "no problem", "arvo" for afternoon, etc. Keep it short, friendly and conversational, like staff chatting with customers. Output the translation only:\n\n' + src }] })
+    });
+    var data = await resp.json();
+    var translated = data.content && data.content[0] && data.content[0].text;
+    if (translated) {
+      document.getElementById(tgtId).value = translated.trim();
+      statusEl.textContent = '✅ 완료';
+      setTimeout(function(){statusEl.textContent='';}, 2000);
+    } else { statusEl.textContent = '실패'; }
+  } catch(e) { statusEl.textContent = '실패'; }
+}
+
 function showToast(msg) {
   var t = document.createElement('div');
   t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#111;color:white;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;white-space:nowrap;font-family:"Noto Sans KR",sans-serif;';
@@ -1438,6 +1897,8 @@ document.getElementById('editModal').addEventListener('click', function(e) { if(
 document.getElementById('confirmModal').addEventListener('click', function(e) { if(e.target===this) closeConfirm(); });
 document.getElementById('printModal').addEventListener('click', function(e) { if(e.target===this) closePrintModal(); });
 document.getElementById('pwModal').addEventListener('click', function(e) { if(e.target===this) closePw(); });
+document.getElementById('shoppingModal').addEventListener('click', function(e) { if(e.target===this) closeShoppingModal(); });
+document.getElementById('faqModal').addEventListener('click', function(e) { if(e.target===this) closeFaqModal(); });
 
 (async function() { await loadDB(); renderAll(); })();
 
